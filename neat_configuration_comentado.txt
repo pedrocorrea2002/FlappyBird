@@ -1,0 +1,80 @@
+
+[NEAT]
+fitness_criterion     = max #objetivo: maximizar a pontuação
+fitness_threshold     = 1000 #após o pássaro passar de 1000 canos o pássaro é considerado imortal e o jogo fecha
+pop_size              = 100 #quantidade da população de pássaros por teste
+reset_on_extinction   = False #começar de volta da primeira geração caso todos os 100 forem extintos
+
+[DefaultGenome]
+# node activation options
+activation_default      = tanh #tangente hiperbólica
+activation_mutate_rate  = 0.0 #chances de trocar de uma função de ativação para a outra, nesse caso 0
+activation_options      = tanh #opções de funções de ativação existentes, nesse caso só será usada o tanh mesmo
+
+# node aggregation options
+aggregation_default     = sum #função usada para agregar os diferentes inputs
+aggregation_mutate_rate = 0.0 #chances de trocar de uma função de agregação para a outra, nesse caso 0
+aggregation_options     = sum #opções de funções de ativação agregação, nesse caso só será usada o sum mesmo
+
+# node bias options tanH(sum(inputs) - bias)
+bias_init_mean          = 0.0 #média do bias
+bias_init_stdev         = 1.0 #desvio padrão do bias
+bias_max_value          = 30.0 #valor máximo do bias
+bias_min_value          = -30.0 #valor mínimo do bias
+bias_mutate_power       = 0.5 #grau de mutação do bias, EX: nesse caso: gen1(bias = 2) => gen2(bias = 3) => gen3(bias 4.5)
+bias_mutate_rate        = 0.7 #chances de existir de mutação no bias de uma geração para outra
+bias_replace_rate       = 0.1 #chances de o bias ser totalmente substituído por um valor aleatório, desconsiderando o bias da geração anterior
+
+# genome compatibility options - parâmetros usados para agrupar pássaros como sendo da mesma espécie por nível de semelhante
+compatibility_disjoint_coefficient = 1.0
+compatibility_weight_coefficient   = 0.5
+
+# connection add/remove rates
+conn_add_prob           = 0.5 #chances de a próxima geração ter uma sinápse a mais
+conn_delete_prob        = 0.5 #chances de a próxima geração ter uma sinápse a menos
+
+# connection enable options
+enabled_default         = True #não devem existir sinápses inativas por padrão
+enabled_mutate_rate     = 0.01 #chances de a opção acima ir para True ou para False de uma geração para a outra
+
+feed_forward            = True #a camada anterior sempre se comunica apenas com a posterior
+initial_connection      = full
+
+# node add/remove rates
+node_add_prob           = 0.2 #chances de a próxima geração ter um nó a mais
+node_delete_prob        = 0.2 #chances de a próxima geração ter um nó a menos
+
+# network parameters
+num_hidden              = 0 #quantidade de nós intermediários
+num_inputs              = 3 #quantidade de nós de inputs
+num_outputs             = 1 #quantidade de nós de output
+
+# node response options #esse número representa um valor pelo qual o output será multiplicado antes de ser subtraído pelo bias, por padrão esse valor está definido como 1
+response_init_mean      = 1.0
+response_init_stdev     = 0.0
+response_max_value      = 30.0
+response_min_value      = -30.0
+response_mutate_power   = 0.0
+response_mutate_rate    = 0.0
+response_replace_rate   = 0.0
+
+# connection weight options #configurações de mutação dos pesos das sinápses
+weight_init_mean        = 0.0
+weight_init_stdev       = 1.0
+weight_max_value        = 30
+weight_min_value        = -30
+weight_mutate_power     = 0.5
+weight_mutate_rate      = 0.8
+weight_replace_rate     = 0.1
+
+[DefaultSpeciesSet]
+compatibility_threshold = 3.0 #grau de semelhança necessário para dois pássaros sejam considerados a mesma espécie
+
+[DefaultStagnation]
+species_fitness_func = max #objetivo da evolução, no caso é que aqui é aumentar a pontuação máxima
+max_stagnation       = 20 #espécies que não evoluem já a 20 gerações, são exterminados e substituídos por descendentes das espécies restantes
+species_elitism      = 2 #caso todas as espécies estagnarem, sobrarão sempre 2 espécies ser serem exterminadas
+
+[DefaultReproduction]
+elitism            = 2 #quantidade de pássaros que podem passar para a próxima geração em sofrerem mutações
+survival_threshold = 0.2 #porcentagem máxima de uma espécie que pode ser passada para a próxima geração, para evitar que uma única espécie que é melhor que as outras substitua todas as outras
